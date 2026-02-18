@@ -1,9 +1,9 @@
-@ data1 1
-@ data2 2
-@ data3 3
+@ X 1
+@ Y 2
+@ Z 3
 
-G data1
-A data2
-A data3
-P data1
-S 0
+G X
+A Y
+A Z
+P X
+S
