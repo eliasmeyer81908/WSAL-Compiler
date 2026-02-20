@@ -17,6 +17,10 @@ void goToLine( std::ifstream& file , char c );
 int main()
 {
 	std::ifstream input("input.txt");
+	if ( !input.is_open() )
+	{
+		throw std::invalid_argument("File not found");
+	}
 	
 	for ( int i = 0; i < 26; i++)
 	{
@@ -58,6 +62,7 @@ int main()
 				{
 					input >> ch;
 				}
+				currLine++;
 				continue;
 			case 'G':
 				std::cerr << "G loop\n";
@@ -167,6 +172,7 @@ void firstparse(std::ifstream& file)
 	
 	while ( c != 'S' )
 	{
+		std::cerr << "Working with character: " << c << '\n';
 		if ( c == '@' )
 		{
 			std::cerr << "Working with @ in first parse\n";
@@ -184,6 +190,8 @@ void firstparse(std::ifstream& file)
 			char temp = c;
 			file >> c;
 
+			std::cerr << "Checking @ digit: " << c << "\n";
+
 			if ( !std::isdigit(c) )
 			{
 				throw std::logic_error("No negative numbers or invalid number");
@@ -196,9 +204,13 @@ void firstparse(std::ifstream& file)
 				file >> c;
 			}
 
-			if ( memory[c-'A'] != -2 )
+			// std::cerr << "temp is: " << temp << "\n";
+			// std::cerr << "memory[temp-'A']: " << memory[temp-'A'] << '\n';
+
+			if ( memory[temp-'A'] != -1 )
 			{
-				throw std::logic_error("Syntax error on line: " + line);
+				std::cerr << "Syntax error on line: " << line << "\n";
+				throw std::logic_error("Syntax Error");
 			}
 			
 			if ( value > 255 ) 
@@ -209,6 +221,9 @@ void firstparse(std::ifstream& file)
 			data[temp-'A'] = value;
 			memory[temp-'A'] = line;
 			line++;
+			
+			std::cerr << "Done with @\n";
+
 			continue;
 		}
 		else if ( c == ':' )
@@ -226,6 +241,15 @@ void firstparse(std::ifstream& file)
 
 			memory[c-'A'] = line;
 			file >> c;
+		}
+		else if ( memory[c-'A'] == -2 )
+		{
+			file >> c;
+			file >> c;
+		}
+		else
+		{
+			throw std::runtime_error("Unexpected first instruction");
 		}
 		line++;
 	}
