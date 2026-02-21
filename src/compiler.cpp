@@ -51,11 +51,13 @@ int main()
 
 	while ( ch != 'S' )
 	{
+		// std::cerr << "char we are working with: " << ch << '\n';
 		int newValue{0};
 		switch (ch)
 		{
+			
 			case '@':
-				std::cerr << "@ loop\n";
+				// std::cerr << "@ loop\n";
 				input >> ch;
 				input >> ch;
 				while ( std::isdigit(ch) )
@@ -65,19 +67,19 @@ int main()
 				currLine++;
 				continue;
 			case 'G':
-				std::cerr << "G loop\n";
+				// std::cerr << "G loop\n";
 				input >> ch;
 				validCheck(ch, currLine);
 				reg = data[ch-'A'];
 				break;
 			case 'P':
-				std::cerr << "P Loop";
+				// std::cerr << "P Loop\n";
 				input >> ch;
 				validCheck(ch, currLine);
 				data[ch-'A'] = reg;
 				break;
 			case 'N':
-				std::cerr << "N loop\n";
+				// std::cerr << "N loop\n";
 				char bits[9];
 				bits[9] = '\0';
 
@@ -98,15 +100,16 @@ int main()
 				break;
 				
 			case 'C':
-				std::cerr << "C loop\n";
+				// std::cerr << "C loop\n";
 				input >> ch;
 				validCheck(ch, currLine);
 				isLessEqual = reg < data[ch-'A'];
 				break;
 			
 			case 'A':
-				std::cerr << "A loop\n";
+				// std::cerr << "A loop\n";
 				input >> ch;
+				// std::cerr << "next char: " << ch << "\n";
 				validCheck(ch, currLine);
 				reg += data[ch-'A'];
 				if ( reg > 256 )
@@ -115,7 +118,7 @@ int main()
 				}
 				break;
 			case 'J':
-				std::cerr << "J loop\n";
+				// std::cerr << "J loop\n";
 				input >> ch;
 				assert( std::abs(ch-'A') < 25 && memory[ch-'A'] >= 0 );
 				if ( isLessEqual )
@@ -128,6 +131,8 @@ int main()
 		currLine++;
 		input >> ch;
 	}
+
+	std::cout << "Done Parsing, the register at the end was: " << reg;
 
 	return 0;
 }
@@ -158,24 +163,28 @@ void goToLine( std::ifstream& file , char c )
 
 void validCheck(char c, int cLine)
 {
-	assert( std::abs(ch-'A') < 25 && memory[ch-'A'] >= 0 && data[ch-'A'] >= 0 && cLine > memory[ch-'A'] );
+	// assert( std::abs(ch-'A') < 26);
+	// assert( memory[ch-'A'] >= 0 );
+	// assert( data[ch-'A'] >= 0 );
+	// assert( cLine > memory[ch-'A'] );
+	assert( std::abs(ch-'A') < 26 && memory[ch-'A'] >= 0 && data[ch-'A'] >= 0 && cLine > memory[ch-'A'] );
 }
 
 void firstparse(std::ifstream& file)
 {
-	std::cerr << "First parsing\n";
+	// std::cerr << "First parsing\n";
 	int line{0};
 	char c;
 
 	file >> c;
-	std::cerr << "Read char: " << c << "\n";
+	// std::cerr << "Read char: " << c << "\n";
 	
 	while ( c != 'S' )
 	{
-		std::cerr << "Working with character: " << c << '\n';
+		// std::cerr << "Working with character: " << c << '\n';
 		if ( c == '@' )
 		{
-			std::cerr << "Working with @ in first parse\n";
+			// std::cerr << "Working with @ in first parse\n";
 			file >> c;
 			if ( std::abs(c-'A') > 25 )
 			{
@@ -190,7 +199,7 @@ void firstparse(std::ifstream& file)
 			char temp = c;
 			file >> c;
 
-			std::cerr << "Checking @ digit: " << c << "\n";
+			// std::cerr << "Checking @ digit: " << c << "\n";
 
 			if ( !std::isdigit(c) )
 			{
@@ -222,13 +231,13 @@ void firstparse(std::ifstream& file)
 			memory[temp-'A'] = line;
 			line++;
 			
-			std::cerr << "Done with @\n";
+			// std::cerr << "Done with @\n";
 
 			continue;
 		}
 		else if ( c == ':' )
 		{
-			std::cerr << "WOrking with :\n";
+			// std::cerr << "WOrking with :\n";
 			file >> c;
 			if ( std::abs(ch-'A') > 25 )
 			{
