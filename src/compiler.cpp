@@ -70,6 +70,7 @@ int main()
 				// std::cerr << "G loop\n";
 				input >> ch;
 				validCheck(ch, currLine);
+				std::cerr << "In G loop, setting the regsiter to: " << data[ch-'A'] << '\n';
 				reg = data[ch-'A'];
 				break;
 			case 'P':
@@ -111,6 +112,7 @@ int main()
 				input >> ch;
 				// std::cerr << "next char: " << ch << "\n";
 				validCheck(ch, currLine);
+				std::cerr << "In the add loop, value added will be: " << data[ch-'A'] << '\n';
 				reg += data[ch-'A'];
 				if ( reg > 256 )
 				{
@@ -206,10 +208,12 @@ void firstparse(std::ifstream& file)
 				throw std::logic_error("No negative numbers or invalid number");
 			}
 
+			value += c-'0';
+			file >> c;
 			while ( std::isdigit(c) )
 			{
-				value += (c-'0');
 				value *= 10;
+				value += c-'0';
 				file >> c;
 			}
 
